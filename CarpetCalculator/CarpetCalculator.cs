@@ -10,41 +10,93 @@ namespace CarpetCalculator
         
         public static void Main(string[] args)
         {
-            const int SQ_FT_PER_SQ_YARD = 9;
-            const int INCHES_PER_FOOT = 12;
-            const string BEST_CARPET = "Berber";
-            const string ECONOMY_CARPET = "Pile";
-
-            int roomLengthFeet = 12, roomLengthInches = 2, roomWidthFeet = 14, roomWidthInches = 7;
-            double roomLength, roomWidth, carpetPrice, numOfSquareFeet, numOfSquareYards, totalCost;
+            double roomWidth, roomLength, pricePerSquareYard, numOfSquareYards;
 
 
 
-
-
-            roomLength = roomLengthFeet + (double)roomLengthInches / INCHES_PER_FOOT;
-            roomWidth = roomWidthFeet + (double)roomWidthInches / INCHES_PER_FOOT;
-            numOfSqaureFeet = roomLength * roomWidth;
-            numOfSquareYards = numOfSquareFeet / SQ_FT_PER_SQ_YARD;
+            DisplayInstructions();
 
 
 
-            carpetPrice = 27.95;
-            totalCost = numOfSquareYards * carpetPrice;
-
-
-
-            Console.WriteLine("The cost of " + BEST_CARPET + " is {0:C}.", totalCost);
-            Console.WriteLine();
-
-
-
-            carpetPrice = 15.95;
-            totalCost = numOfSquareYards * carpetPrice;
-            Console.WriteLine("The cost of " + ECONOMY_CARPET + " is {0:C}.", totalCost);
+            roomLength = GetDimension("Length");
+            roomWidth = GetDimension("Width");
+            pricePerSquareYard = GetPrice();
+            numOfSquareYards = DetermineSquareYards(roomWidth, roomLength);
+            DisplayResults(numOfSquareYards, pricePerSquareYard);
 
 
             Console.ReadKey();
+        }
+
+
+
+        public static void DisplayInstructions()
+        {
+            Console.WriteLine("This program will determine how much carpet to purchase.");
+            Console.WriteLine();
+            Console.WriteLine("You will be asked to enter the side of the room and the price of the carpet, in price sper square yards.");
+            Console.WriteLine();
+        }
+
+
+
+        public static double GetDimension(string side)
+        {
+            string inputValue;
+            int feet, inches;
+
+
+
+            Console.Write("Enter the {0} in feet: ", side);
+            inputValue = Console.ReadLine();
+            feet = int.Parse(inputValue);
+            Console.Write("Enter the {0} in inches: ", side);
+            inputValue = Console.ReadLine();
+            inches = int.Parse(inputValue);
+
+
+
+            return (feet + (double)inches / 12);
+        }
+
+
+
+        public static double GetPrice()
+        {
+            string inputValue;
+            double price;
+            Console.Write("Enter the price per Square Yard: ");
+            inputValue = Console.ReadLine();
+            price = double.Parse(inputValue);
+            return price;
+        }
+
+
+
+        public static double DetermineSquareYards (double width, double length)
+        {
+            const int SQ_FT_PER_YARD = 9;
+            double numOfSquareYards;
+            numOfSquareYards = length * width / SQ_FT_PER_YARD;
+            return numOfSquareYards;
+        }
+
+
+
+        public static double DeterminePrice ( double squareYards, double pricePerSquareYard)
+        {
+            return (pricePerSquareYard * squareYards);
+        }
+
+
+
+        public static void DisplayResults(double squareYards, double pricePerSquareYard)
+        {
+            Console.WriteLine();
+            Console.Write("Square Yards Needed: ");
+            Console.WriteLine("{0:N2}", squareYards);
+            Console.Write("Total Cost @ {0:C} ", pricePerSquareYard);
+            Console.WriteLine(" per square yard: {0:C}", DeterminePrice(squareYards, pricePerSquareYard));
         }
     }
 }
